@@ -15,13 +15,14 @@
         text-align: center;
       }
       .container {
-        padding-top: 40px;
+        padding-top: 80px;
+        margin-top: 20px;
       }
     </style>
   </head>
   <body>
     {% include 'navbar.html' %}
-    <div class="container col-md-6 offset-md-3 d-flex flex-column min-vh-100">
+    <div class="container col-md-6 offset-md-3">
       <br />
       <!--Creation of the alert messages-->
       {% if messages %}{% for message in messages %}
