@@ -7,30 +7,34 @@
     <title>Document</title>
   </head>
   <body>
-    <h2>Expense Detail</h2>
-
-    <div class="card">
-      <div class="card-header">The Details Of Expense {{expenseDetail.id}}</div>
-      <div class="card-body">
-        <p class="card-text">
-          <strong>Category: </strong>{{expenseDetail.category}}
-        </p>
-        <p class="card-text">
-          <strong>Amount: </strong> {{expenseDetail.amount}}
-        </p>
-        <p class="card-text">
-          <strong>Description: </strong>
-          {{expenseDetail.description}}
-        </p>
-        <p class="card-text"><strong>Date: </strong>{{expenseDetail.date}}</p>
-        <p class="card-text">
-          <strong>Created at: </strong>{{expenseDetail.created_at}}
-        </p>
-        <br />
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+    <div class="col-md-6 offset-md-3">
+      <h2>Expense Detail</h2>
+      <div class="card">
+        <div class="card-header">
+          <strong>The Details Of Expense {{expenseDetail.id}}</strong>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            <strong>Category: </strong>{{expenseDetail.category}}
+          </p>
+          <p class="card-text">
+            <strong>Amount: </strong> {{expenseDetail.amount}}
+          </p>
+          <p class="card-text">
+            <strong>Description: </strong>
+            {{expenseDetail.description}}
+          </p>
+          <p class="card-text"><strong>Date: </strong>{{expenseDetail.date}}</p>
+          <p class="card-text">
+            <strong>Created at: </strong>{{expenseDetail.created_at}}
+          </p>
+        </div>
       </div>
+      <br />
+      <a href="#" class="btn btn-secondary">Update</a>
+      <a href="#" class="btn btn-danger">Delete</a>
+      <a href="{% url 'userProfile' %}" class="btn btn-secondary">Back</a>
     </div>
   </body>
 </html>
-
 {%endblock%}
