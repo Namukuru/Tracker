@@ -112,3 +112,8 @@ def add_income(request):
             messages.success(request, "You have successfully added the income")
         return redirect('home')
     return render(request, 'income.html', {'form': form})
+
+
+def expense_detail(request, pk):
+    expenseDetail = Expense.objects.get(id=pk)
+    return render(request, 'expenseDetail.html', {'expenseDetail': expenseDetail})
