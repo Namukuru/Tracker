@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="col-md-6 offset-md-3">
+      <h2>Income Detail</h2>
+      <div class="card">
+        <div class="card-header">
+          <strong>The Details Of Income {{expenseDetail.id}}</strong>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            <strong>Amount: </strong> {{incomeDetail.amount}}
+          </p>
+          <p class="card-text">
+            <strong>Description: </strong>
+            {{incomeDetail.description}}
+          </p>
+          <p class="card-text"><strong>Date: </strong>{{incomeDetail.date}}</p>
+          <p class="card-text">
+            <strong>Created at: </strong>{{incomeDetail.created_at}}
+          </p>
+        </div>
+      </div>
+      <br />
+      <a href="#" class="btn btn-secondary">Update</a>
+      <a href="#" class="btn btn-danger">Delete</a>
+      <a href="{% url 'userProfile' %}" class="btn btn-secondary">Back</a>
+    </div>
+  </body>
+</html>
+{%endblock%}
