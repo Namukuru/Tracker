@@ -8,9 +8,9 @@
     <title>User Profile</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-      
       .page-container {
         display: flex;
+        float: left;
         flex-wrap: wrap;
         width: 100%;
         margin: 0 auto;
@@ -18,7 +18,10 @@
       }
       .card-container {
         margin: 30px;
-        
+        display: flex;
+        float: center;
+        flex-wrap: wrap;
+        width: 100%;
       }
       .nav-item {
         padding-left: 10px;
@@ -30,13 +33,18 @@
         grid-gap: 40px;
       }
       .navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000; /* Ensure the navbar is above other content */
-  }
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000; /* Ensure the navbar is above other content */
+      }
+      .expense-chart,
+      .income-chart {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     </style>
-
   </head>
   <body >
     <h1>Welcome {{ user.username }}</h1>
@@ -53,7 +61,7 @@
                 <p class="card-text">
                   {% if expenses %}
                   <table class="table-expense table-striped table-hover">
-                    <thead class="table-dark">
+                    <thead>
                       <tr>
                         <th>No</th>
                         <th>Category</th>
@@ -82,8 +90,55 @@
               </div>
             </div>
           </div>
-          <div class="expense-message">
-            <p>Hello Expenses</p>
+          <div class="expense-chart">
+            <canvas id="expenseChart" width="300" height="300"></canvas>
+            <script>
+              // Extract data from the HTML table
+              var table = document.querySelector('.table-expense');
+              var rows = table.querySelectorAll('tbody tr');
+              var labels = [];
+              var amounts = [];
+            
+              rows.forEach(function(row) {
+                var cells = row.querySelectorAll('td');
+                labels.push(cells[1].textContent); // Category
+                amounts.push(parseFloat(cells[2].textContent)); // Amount
+              });
+            
+              // Create pie chart
+              var ctx = document.getElementById('expenseChart').getContext('2d');
+              var expenseChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                  labels: labels,
+                  datasets: [{
+                    label: 'Amount',
+                    data: amounts,
+                    backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)', // Red color with transparency
+                      'rgba(54, 162, 235, 0.2)', // Blue color with transparency
+                      'rgba(255, 206, 86, 0.2)', // Yellow color with transparency
+                      'rgba(75, 192, 192, 0.2)', // Green color with transparency
+                      'rgba(153, 102, 255, 0.2)', // Purple color with transparency
+                      'rgba(255, 159, 64, 0.2)' // Orange color with transparency
+                    ],
+                    borderColor: [
+                      'rgba(255, 99, 132, 1)', // Red color
+                      'rgba(54, 162, 235, 1)', // Blue color
+                      'rgba(255, 206, 86, 1)', // Yellow color
+                      'rgba(75, 192, 192, 1)', // Green color
+                      'rgba(153, 102, 255, 1)', // Purple color
+                      'rgba(255, 159, 64, 1)' // Orange color
+                    ],
+                    borderWidth: 2
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  
+                }
+              });
+            </script>
           </div>
          
         </section>
@@ -99,7 +154,7 @@
                 <p class="card-text">
                   {% if incomes %}
                   <table class="table-income table-striped table-hover">
-                    <thead class="table-dark">
+                    <thead>
                       <tr>
                         <th>No</th>
                         <th>Amount</th>
@@ -126,99 +181,50 @@
               </div>
             </div>
           </div>
-          <div class="expense-message">
-            <p>Hello Income</p>
+          <div class="income-chart">
+            <canvas id="incomeChart" width="400" height="200"></canvas>
+            <script>
+                // Extract data from the HTML table
+                var table = document.querySelector('.table-income');
+                var rows = table.querySelectorAll('tbody tr');
+                var descriptions = [];
+                var amounts = [];
+
+                rows.forEach(function(row) {
+                    var cells = row.querySelectorAll('td');
+                    descriptions.push(cells[2].textContent); // Description
+                    amounts.push(parseFloat(cells[1].textContent)); // Amount
+                });
+
+                // Create bar graph
+                var ctx = document.getElementById('incomeChart').getContext('2d');
+                var incomeChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: descriptions,
+                        datasets: [{
+                            label: 'Amount',
+                            data: amounts,
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue color with transparency
+                            borderColor: 'rgba(54, 162, 235, 1)', // Blue color
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            </script>
           </div>
         </section>
-    </div>
-    <canvas id="expenseChart" width="300" height="300"></canvas>
-    <script>
-      // Extract data from the HTML table
-      var table = document.querySelector('.table-expense');
-      var rows = table.querySelectorAll('tbody tr');
-      var labels = [];
-      var amounts = [];
-    
-      rows.forEach(function(row) {
-        var cells = row.querySelectorAll('td');
-        labels.push(cells[1].textContent); // Category
-        amounts.push(parseFloat(cells[2].textContent)); // Amount
-      });
-    
-      // Create pie chart
-      var ctx = document.getElementById('expenseChart').getContext('2d');
-      var expenseChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'Amount',
-            data: amounts,
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)', // Red color with transparency
-              'rgba(54, 162, 235, 0.2)', // Blue color with transparency
-              'rgba(255, 206, 86, 0.2)', // Yellow color with transparency
-              'rgba(75, 192, 192, 0.2)', // Green color with transparency
-              'rgba(153, 102, 255, 0.2)', // Purple color with transparency
-              'rgba(255, 159, 64, 0.2)' // Orange color with transparency
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)', // Red color
-              'rgba(54, 162, 235, 1)', // Blue color
-              'rgba(255, 206, 86, 1)', // Yellow color
-              'rgba(75, 192, 192, 1)', // Green color
-              'rgba(153, 102, 255, 1)', // Purple color
-              'rgba(255, 159, 64, 1)' // Orange color
-            ],
-            borderWidth: 2
-          }]
-        },
-        options: {
-          responsive: true,
-          
-        }
-      });
-    </script>
-    <canvas id="incomeChart" width="400" height="200"></canvas>
-    <script>
-        // Extract data from the HTML table
-        var table = document.querySelector('.table-income');
-        var rows = table.querySelectorAll('tbody tr');
-        var descriptions = [];
-        var amounts = [];
-
-        rows.forEach(function(row) {
-            var cells = row.querySelectorAll('td');
-            descriptions.push(cells[2].textContent); // Description
-            amounts.push(parseFloat(cells[1].textContent)); // Amount
-        });
-
-        // Create bar graph
-        var ctx = document.getElementById('incomeChart').getContext('2d');
-        var incomeChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: descriptions,
-                datasets: [{
-                    label: 'Amount',
-                    data: amounts,
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue color with transparency
-                    borderColor: 'rgba(54, 162, 235, 1)', // Blue color
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-    </script>
+    </div> 
   </body>
 </html>
 {% endblock %}
