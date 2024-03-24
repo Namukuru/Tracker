@@ -31,16 +31,18 @@ def user_profile(request):
     expenses = request.user.expense_set.all()  # Filter by logged-in user
     incomes = request.user.income_set.all()
     total_expenses = 0
+    total_income = 0
     for expense in expenses:
         total_expenses += expense.amount
-    total_income = 0
     for income in incomes:
         total_income += income.amount
+    balance = total_income - total_expenses
     context = {
         'expenses': expenses,
         'incomes': incomes,
         'total_expenses': total_expenses,
-        'total_income': total_income
+        'total_income': total_income,
+        'balance': balance
     }
 
     return render(request, 'userProfile.html', context)
