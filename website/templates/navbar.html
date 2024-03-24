@@ -9,7 +9,6 @@
         position: fixed;
         top: 0;
         width: 100%;
-        /* Set a higher z-index to ensure it stays on top */
       }
     </style>
   </head>
@@ -51,35 +50,6 @@
                 href="{%url 'userProfile'%}"
                 >My Account</a
               >
-            </li>
-
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Account
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="dropdown-item" href="{%url 'expense'%}"
-                    >Add Expenses</a
-                  >
-                </li>
-                <li>
-                  <a class="dropdown-item" href="{%url 'income'%}"
-                    >Add Income</a
-                  >
-                </li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider" /></li>
-                <li>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </li>
-              </ul>
             </li>
           </ul>
           {%endif%}
