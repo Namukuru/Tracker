@@ -48,6 +48,11 @@
   </head>
   <body >
     <h1>Welcome {{ user.username }}</h1>
+    <br>
+    <p><strong>Total Income: {{total_income}}</strong></p>
+    <p><strong>Total Expenses: {{total_expenses}}</strong></p>
+    <p><strong>Balance: {{balance}}</strong></p>
+    <br>
     <div class="page-container">
         <section class="expense">
           <div class="card-container ">
@@ -188,6 +193,7 @@
                             <th>Amount</th>
                             <th>Description</th>
                             <th>Date</th>
+                            <th>Created At</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -196,7 +202,8 @@
                             <td><a href="{%url 'incomeDetail' income.id %}">{{ income.id }}</a></td>                     
                             <td>{{ income.amount }}</td>
                             <td>{{ income.description }}</td>
-                            <td>{{ income.date }}</td>                         
+                            <td>{{ income.date }}</td>
+                            <td>{{ income.created_at }}</td>                          
                           </tr>
                           {% endfor %}
                         </tbody>
