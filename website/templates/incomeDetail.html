@@ -11,7 +11,7 @@
       <h2>Income Detail</h2>
       <div class="card">
         <div class="card-header">
-          <strong>The Details Of Income {{expenseDetail.id}}</strong>
+          <strong>The Details Of Income {{incomeDetail.id}}</strong>
         </div>
         <div class="card-body">
           <p class="card-text">
@@ -29,7 +29,9 @@
       </div>
       <br />
       <a href="#" class="btn btn-secondary">Update</a>
-      <a href="#" class="btn btn-danger">Delete</a>
+      <a href="{% url 'delete_income' incomeDetail.id %}" class="btn btn-danger"
+        >Delete</a
+      >
       <a href="{% url 'userProfile' %}" class="btn btn-secondary">Back</a>
     </div>
   </body>
