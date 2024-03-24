@@ -124,15 +124,15 @@ def income_detail(request, pk):
     return render(request, 'incomeDetail.html', {'incomeDetail': incomeDetail})
 
 
-def delete_expenseDetail(request, pk):
+def delete_expense(request, pk):
     delete_expense = Expense.objects.get(id=pk)
     delete_expense.delete()
     messages.success(request, "You have successfully deleted the expense !")
     return redirect('userProfile')
 
 
-def delete_incomeDetail(request, pk):
+def delete_income(request, pk):
     delete_income = Income.objects.get(id=pk)
     delete_income.delete()
-    messages.success(request, "You have successfully deleted the expense !")
+    messages.success(request, "You have successfully deleted the income !")
     return redirect('userProfile')
