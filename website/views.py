@@ -112,7 +112,7 @@ def add_income(request):
             new_income.user = request.user  # Associate the income with the logged-in user
             new_income.save()
             messages.success(request, "You have successfully added the income")
-        return redirect('home')
+        return redirect('userProfile')
     return render(request, 'income.html', {'form': form})
 
 
