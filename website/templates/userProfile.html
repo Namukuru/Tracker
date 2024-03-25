@@ -16,7 +16,7 @@
         margin: 0 auto;
         padding-left: 10px;
       }
-      .card-container {
+      .card-container{
         margin: 30px;
         display: flex;
         float: center;
@@ -44,15 +44,26 @@
         justify-content: center;
         align-items: center;
       }
+      .summary {
+        display: flex;
+        justify-content: center;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 40px;
+      }
+      .income-chart{
+        color: white;
+      }
     </style>
   </head>
   <body >
     <h1>Welcome {{ user.username }}</h1>
     <br>
-    <p><strong>Total Income: {{total_income}}</strong></p>
-    <p><strong>Total Expenses: {{total_expenses}}</strong></p>
-    <p><strong>Balance: {{balance}}</strong></p>
-    <br>
+    <div class="summary">
+      <div class="summary-item"><p><strong>Total Income: {{total_income}}</strong></p></div>
+      <div class="summary-item"><p><strong>Total Expenses: {{total_expenses}}</strong></p></div>
+      <div class="summary-item"><p><strong>Balance: {{balance}}</strong></p></div>
+    </div>
     <div class="page-container">
         <section class="expense">
           <div class="card-container ">
@@ -250,7 +261,7 @@
                           data: amounts,
                           backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue color with transparency
                           borderColor: 'rgba(54, 162, 235, 1)', // Blue color
-                          borderWidth: 1
+                          borderWidth: 2
                       }]
                   },
                   options: {
@@ -258,7 +269,8 @@
                       scales: {
                           yAxes: [{
                               ticks: {
-                                  beginAtZero: true
+                                  beginAtZero: true,
+                                  fontColor: 'blue'
                               }
                           }]
                       }
