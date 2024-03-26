@@ -28,7 +28,11 @@
         </div>
       </div>
       <br />
-      <a href="#" class="btn btn-secondary">Update</a>
+      <a
+        href="{% url 'update_income' incomeDetail.id %}"
+        class="btn btn-secondary"
+        >Update</a
+      >
       <a href="{% url 'delete_income' incomeDetail.id %}" class="btn btn-danger"
         >Delete</a
       >
