@@ -138,3 +138,37 @@ def delete_income(request, pk):
     delete_income.delete()
     messages.success(request, "You have successfully deleted the income !")
     return redirect('userProfile')
+
+
+def update_expense(request, pk):
+    current_expense = Expense.objects.get(id=pk)
+
+    if request.method == 'POST':
+        form = ExpenseForm(request.POST, instance=current_expense)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, "You have successfully updated the expense!")
+            return redirect('userProfile')
+    else:
+        # Create an unbound form pre-populated with expense data for GET requests
+        form = ExpenseForm(instance=current_expense)
+
+    return render(request, 'update_expense.html', {'form': form})
+
+
+def update_income(request, pk):
+    current_income = Expense.objects.get(id=pk)
+
+    if request.method == 'POST':
+        form = IncomeForm(request.POST, instance=current_income)
+        if form.is_valid():
+            form.save()
+            messages.success(
+                request, "You have successfully updated the expense!")
+            return redirect('userProfile')
+    else:
+        # Create an unbound form pre-populated with expense data for GET requests
+        form = IncomeForm(instance=current_income)
+
+    return render(request, 'update_income.html', {'form': form})
