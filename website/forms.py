@@ -45,12 +45,13 @@ class ExpenseForm(forms.ModelForm):
         attrs={"placeholder": "Category", "class": "form-control"}), label="Category of the expense")
     description = forms.CharField(required=True, widget=forms.widgets.TextInput(
         attrs={"placeholder": "Description", "class": "form-control"}), label="Description of the expense")
-    date = forms.CharField(required=True, widget=forms.widgets.TextInput(
-        attrs={"placeholder": "Date", "class": "form-control"}), label="Date of expense")
+    date = forms.DateField(required=True, widget=forms.widgets.TextInput(
+        # Add datepicker class (optional)
+        attrs={"placeholder": "YYYY-MM-DD", "class": "form-control datepicker"}), label="Date of expense")
 
     class Meta:
         model = Expense
-        fields = ('amount', 'category', 'description')
+        fields = ('amount', 'category', 'description', 'date')
 
 
 class IncomeForm(forms.ModelForm):
@@ -58,8 +59,9 @@ class IncomeForm(forms.ModelForm):
         attrs={"placeholder": "Amount", "class": "form-control"}), label=" Amount of the Income")
     description = forms.CharField(required=True, widget=forms.widgets.TextInput(
         attrs={"placeholder": "Description", "class": "form-control"}), label="Description of the income")
-    date = forms.CharField(required=True, widget=forms.widgets.TextInput(
-        attrs={"placeholder": "Date", "class": "form-control"}), label="Date of income")
+    date = forms.DateField(required=True, widget=forms.widgets.TextInput(
+        # Add datepicker class (optional)
+        attrs={"placeholder": "YYYY-MM-DD", "class": "form-control datepicker"}), label="Date of expense")
 
     class Meta:
         model = Income
