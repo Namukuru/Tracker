@@ -22,6 +22,7 @@
         float: center;
         flex-wrap: wrap;
         width: 100%;
+        margin-left: 2px;
       }
       .nav-item {
         padding-left: 10px;
@@ -65,7 +66,7 @@
       <div class="summary-item"><p><strong>Balance: {{balance}}</strong></p></div>
     </div>
     <div class="page-container">
-        <section class="expense">
+        <div class="expense">
           <div class="card-container ">
             <div>
               <div class="card text">
@@ -183,102 +184,102 @@
                 }
               });
             </script>
-          </div>         
-        </section>
-        <section class="income">
+          </div>       
+        </div>
+        <div class="income">
           <div class="card-container">
-            <div>
-              <div class="card text">
-                <div class="card-header">
-                  <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item"><strong>Incomes</strong></li>
-                  </ul>
+              <div>
+                <div class="card text">
+                  <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                      <li class="nav-item"><strong>Incomes</strong></li>
+                    </ul>
+                  </div>
+                  <div class="card-body">
+                    <p class="card-text">
+                      {% if incomes %}
+                        <table class="table table-income table-hover table-striped">
+                          <thead class="table-dark">
+                            <tr>
+                              <th>ID</th>
+                              <th>Amount</th>
+                              <th>Description</th>
+                              <th>Date</th>
+                              <th>Created At</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for income in incomes %}
+                            <tr>
+                              <td><a href="{%url 'incomeDetail' income.id %}">{{ income.id }}</a></td>                     
+                              <td>{{ income.amount }}</td>
+                              <td>{{ income.description }}</td>
+                              <td>{{ income.date }}</td>
+                              <td>{{ income.created_at }}</td>                          
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      <br>
+                      <p><strong>Total Income: {{ total_income }}</strong></p>
+                      {% else %}
+                      <h3>You have not yet recorded any income</h3>
+                      {% endif %}
+                    </p>
+                  </div>
                 </div>
-                <div class="card-body">
-                  <p class="card-text">
-                    {% if incomes %}
-                      <table class="table table-income table-hover table-striped">
-                        <thead class="table-dark">
-                          <tr>
-                            <th>ID</th>
-                            <th>Amount</th>
-                            <th>Description</th>
-                            <th>Date</th>
-                            <th>Created At</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {% for income in incomes %}
-                          <tr>
-                            <td><a href="{%url 'incomeDetail' income.id %}">{{ income.id }}</a></td>                     
-                            <td>{{ income.amount }}</td>
-                            <td>{{ income.description }}</td>
-                            <td>{{ income.date }}</td>
-                            <td>{{ income.created_at }}</td>                          
-                          </tr>
-                          {% endfor %}
-                        </tbody>
-                      </table>
-                    <br>
-                    <p><strong>Total Income: {{ total_income }}</strong></p>
-                    {% else %}
-                    <h3>You have not yet recorded any income</h3>
-                    {% endif %}
-                  </p>
+                <div >
+                  <br>
+                  <a class="btn btn-secondary" href="{%url 'income'%}"
+                      >Add Income</a
+                    >
                 </div>
               </div>
-              <div >
-                <br>
-                <a class="btn btn-secondary" href="{%url 'income'%}"
-                    >Add Income</a
-                  >
-              </div>
-            </div>
           </div>
           <div class="income-chart">
-            <canvas id="incomeChart" width="400" height="200"></canvas>
-            <script>
-              // Extract data from the HTML table
-              var table = document.querySelector('.table-income');
-              var rows = table.querySelectorAll('tbody tr');
-              var descriptions = [];
-              var amounts = [];
+              <canvas id="incomeChart" width="400" height="200"></canvas>
+              <script>
+                // Extract data from the HTML table
+                var table = document.querySelector('.table-income');
+                var rows = table.querySelectorAll('tbody tr');
+                var descriptions = [];
+                var amounts = [];
 
-              rows.forEach(function(row) {
-                  var cells = row.querySelectorAll('td');
-                  descriptions.push(cells[2].textContent); // Description
-                  amounts.push(parseFloat(cells[1].textContent)); // Amount
-              });
+                rows.forEach(function(row) {
+                    var cells = row.querySelectorAll('td');
+                    descriptions.push(cells[2].textContent); // Description
+                    amounts.push(parseFloat(cells[1].textContent)); // Amount
+                });
 
-              // Create bar graph
-              var ctx = document.getElementById('incomeChart').getContext('2d');
-              var incomeChart = new Chart(ctx, {
-                  type: 'bar',
-                  data: {
-                      labels: descriptions,
-                      datasets: [{
-                          label: 'Amount',
-                          data: amounts,
-                          backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue color with transparency
-                          borderColor: 'rgba(54, 162, 235, 1)', // Blue color
-                          borderWidth: 2
-                      }]
-                  },
-                  options: {
-                      responsive: true,
-                      scales: {
-                          yAxes: [{
-                              ticks: {
-                                  beginAtZero: true,
-                                  fontColor: 'blue'
-                              }
-                          }]
-                      }
-                  }
-              });
-          </script>
+                // Create bar graph
+                var ctx = document.getElementById('incomeChart').getContext('2d');
+                var incomeChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: descriptions,
+                        datasets: [{
+                            label: 'Amount',
+                            data: amounts,
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue color with transparency
+                            borderColor: 'rgba(54, 162, 235, 1)', // Blue color
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    fontColor: 'blue'
+                                }
+                            }]
+                        }
+                    }
+                });
+            </script>
           </div>
-        </section>
+        </div>
     </div> 
   </body>
 </html>
