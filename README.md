@@ -11,4 +11,6 @@ It provides a platform for recording, categorizing, and analyzing expenses, enab
 5. Income Categorization: Define custom categories for income (e.g., groceries, rent, entertainment) to facilitate organization and analysis.
 6. Visualisation: Graphs and charts are used to help users to track spending trends over time.
 
- 
+# Features to be included 
+1. Budgeting: Users should be able to set a budget 
+
