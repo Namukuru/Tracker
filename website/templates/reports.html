@@ -8,6 +8,22 @@
   </head>
   <body>
     <h1>Welcome to the reports generation area</h1>
+    <h1>Expense Report</h1>
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>Category</th>
+        <th>Amount</th>
+      </tr>
+      {% for expense in expenses %}
+      <tr>
+        <td>{{ expense.date }}</td>
+        <td>{{ expense.category }}</td>
+        <td>{{ expense.amount }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <p>Total Amount: {{ total_amount }}</p>
   </body>
 </html>
 {%endblock%}
