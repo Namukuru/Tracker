@@ -31,6 +31,10 @@ def reports(request):
     return render(request, 'reports.html', {})
 
 
+def budget(request):
+    return render(request, 'budget.html', {})
+
+
 def user_profile(request):
     expenses = request.user.expense_set.all()  # Filter by logged-in user
     incomes = request.user.income_set.all()
