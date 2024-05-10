@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -49,7 +50,7 @@
         display: flex;
         justify-content: center;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
         grid-gap: 40px;
       }
       .income-chart{
@@ -60,227 +61,245 @@
   <body >
     <h1>Welcome {{ user.username }}</h1>
     <br>
-    <div class="summary">
-      <div class="summary-item"><p><strong>Total Income: {{total_income}}</strong></p></div>
-      <div class="summary-item"><p><strong>Total Expenses: {{total_expenses}}</strong></p></div>
-      <div class="summary-item"><p><strong>Balance: {{balance}}</strong></p></div>
-    </div>
-    <div class="page-container">
-        <div class="expense">
-          <div class="card-container ">
-            <div>
-              <div class="card text">
-                <div class="card-header">
-                  <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item"><strong>Expenses</strong></li>
-                  </ul>
-                </div>
-                <div class="card-body">
-                  <p class="card-text">
-                    {% if expenses %}
-                    <table class="table table-striped table-hover">
-                      <thead class="table-dark">
-                        <tr>
-                          <th>ID</th>
-                          <th>Category</th>
-                          <th>Amount</th>
-                          <th>Description</th>
-                          <th>Date</th>
-                          <th>Created At</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {% for expense in expenses %}
-                        <tr>
-                          <td><a href="{%url 'expenseDetail' expense.id %}">{{ expense.id }}</a></td>
-                          <td>{{ expense.category }}</td>
-                          <td>{{ expense.amount }}</td>
-                          <td>{{ expense.description }}</td>
-                          <td>{{ expense.date }}</td>
-                          <td>{{expense.created_at}}</td>
-                        </tr>
-                        {% endfor %}
-                      </tbody>
-                    </table>
-                    <br>
-                    <p><strong>Total Expenses: {{ total_expenses }}</strong></p>
-                    {% else %}
-                    <h3>You have not yet recorded any expense</h3>
-                    {% endif %}
-                  </p>
-                </div>
-              </div>
-              <div >
-                <br>
-                <a class="btn btn-secondary" href="{%url 'expense'%}"
-                    >Add Expense</a
-                  >
-              </div>  
-            </div> 
-          </div>         
-          <div class="expense-chart">
-            <canvas id="expenseChart" width="300" height="300"></canvas>
-            <script>
-              // Extract data from the HTML table
-              var table = document.querySelector('.table');
-              var rows = table.querySelectorAll('tbody tr');
-
-              // Create objects to store category and total amount
-              var categories = {};
-              rows.forEach(function(row) {
-                var cells = row.querySelectorAll('td');
-                var category = cells[1].textContent; // Category
-                var amount = parseFloat(cells[2].textContent); // Amount
-
-                // Check if category exists in object
-                if (categories[category]) {
-                  categories[category] += amount; // Add amount to existing category
-                } else {
-                  categories[category] = amount; // Create new category with amount
-                }
-              });
-
-              // Extract labels and amounts from categories object
-              var labels = [];
-              var amounts = [];
-              
-              for (var category in categories) {
-                if (categories.hasOwnProperty(category)) {
-                  labels.push(category);
-                  amounts.push(categories[category]);
-                }
-              }
-            
-              // Create pie chart
-              var ctx = document.getElementById('expenseChart').getContext('2d');
-              var expenseChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                  labels: labels,
-                  datasets: [{
-                    label: 'Amount',
-                    data: amounts,
-                    backgroundColor: [
-                      'rgba(255, 99, 132, 0.2)', // Red color with transparency
-                      'rgba(54, 162, 235, 0.2)', // Blue color with transparency
-                      'rgba(255, 206, 86, 0.2)', // Yellow color with transparency
-                      'rgba(75, 192, 192, 0.2)', // Green color with transparency
-                      'rgba(153, 102, 255, 0.2)', // Purple color with transparency
-                      'rgba(255, 159, 64, 0.2)' // Orange color with transparency
-                    ],
-                    borderColor: [
-                      'rgba(255, 99, 132, 1)', // Red color
-                      'rgba(54, 162, 235, 1)', // Blue color
-                      'rgba(255, 206, 86, 1)', // Yellow color
-                      'rgba(75, 192, 192, 1)', // Green color
-                      'rgba(153, 102, 255, 1)', // Purple color
-                      'rgba(255, 159, 64, 1)' // Orange color
-                    ],
-                    borderWidth: 2
-                  }]
-                },
-                options: {
-                  responsive: true,
-                }
-              });
-            </script>
-          </div>       
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-2">
+          <div class="sidebar">
+              <h3>Sidebar</h3>
+              <!-- Add your sidebar content here -->
+              <ul>
+                  <li><a href="#">Link 1</a></li>
+                  <li><a href="#">Link 2</a></li>
+                  <!-- Add more sidebar links as needed -->
+              </ul>
+            </div>
         </div>
-        <div class="income">
-          <div class="card-container">
-              <div>
-                <div class="card text">
-                  <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
-                      <li class="nav-item"><strong>Incomes</strong></li>
-                    </ul>
-                  </div>
-                  <div class="card-body">
-                    <p class="card-text">
-                      {% if incomes %}
-                        <table class="table table-income table-hover table-striped">
-                          <thead class="table-dark">
-                            <tr>
-                              <th>ID</th>
-                              <th>Amount</th>
-                              <th>Description</th>
-                              <th>Date</th>
-                              <th>Created At</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {% for income in incomes %}
-                            <tr>
-                              <td><a href="{%url 'incomeDetail' income.id %}">{{ income.id }}</a></td>                     
-                              <td>{{ income.amount }}</td>
-                              <td>{{ income.description }}</td>
-                              <td>{{ income.date }}</td>
-                              <td>{{ income.created_at }}</td>                          
-                            </tr>
-                            {% endfor %}
-                          </tbody>
-                        </table>
-                      <br>
-                      <p><strong>Total Income: {{ total_income }}</strong></p>
-                      {% else %}
-                      <h3>You have not yet recorded any income</h3>
-                      {% endif %}
-                    </p>
-                  </div>
-                </div>
-                <div >
-                  <br>
-                  <a class="btn btn-secondary" href="{%url 'income'%}"
-                      >Add Income</a
-                    >
-                </div>
-              </div>
+        <div class ="col-md-10">
+          <div class="summary">
+            <div class="summary-item"><p><strong>Total Income: {{ total_income|floatformat:"0"|intcomma }}</strong></p></div>
+            <div class="summary-item"><p><strong>Total Expenses: {{total_expenses|floatformat:"0"|intcomma}}</strong></p></div>
+            <div class="summary-item"><p><strong>Balance: {{balance|floatformat:"0"|intcomma}}</strong></p></div>
+            <div class="summary-item"><p><strong>Bugdet: {{budget_amount|floatformat:"0"|intcomma}}</strong></p></div>
           </div>
-          <div class="income-chart">
-              <canvas id="incomeChart" width="400" height="200"></canvas>
-              <script>
-                // Extract data from the HTML table
-                var table = document.querySelector('.table-income');
-                var rows = table.querySelectorAll('tbody tr');
-                var descriptions = [];
-                var amounts = [];
+          <div class="page-container">
+                <div class="expense">
+                  <div class="card-container ">
+                    <div>
+                      <div class="card text">
+                        <div class="card-header">
+                          <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item"><strong>Expenses</strong></li>
+                          </ul>
+                        </div>
+                        <div class="card-body">
+                          <p class="card-text">
+                            {% if expenses %}
+                            <table class="table table-striped table-hover">
+                              <thead class="table-dark">
+                                <tr>
+                                  <th>ID</th>
+                                  <th>Category</th>
+                                  <th>Amount</th>
+                                  <th>Description</th>
+                                  <th>Date</th>
+                                  <th>Created At</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {% for expense in expenses %}
+                                <tr>
+                                  <td><a href="{%url 'expenseDetail' expense.id %}">{{ expense.id }}</a></td>
+                                  <td>{{ expense.category }}</td>
+                                  <td>{{ expense.amount }}</td>
+                                  <td>{{ expense.description }}</td>
+                                  <td>{{ expense.date }}</td>
+                                  <td>{{expense.created_at}}</td>
+                                </tr>
+                                {% endfor %}
+                              </tbody>
+                            </table>
+                            <br>
+                            <p><strong>Total Expenses: {{ total_expenses }}</strong></p>
+                            {% else %}
+                            <h3>You have not yet recorded any expense</h3>
+                            {% endif %}
+                          </p>
+                        </div>
+                      </div>
+                      <div >
+                        <br>
+                        <a class="btn btn-secondary" href="{%url 'expense'%}"
+                            >Add Expense</a
+                          >
+                      </div>  
+                    </div> 
+                  </div>         
+                  <div class="expense-chart">
+                    <canvas id="expenseChart" width="300" height="300"></canvas>
+                    <script>
+                      // Extract data from the HTML table
+                      var table = document.querySelector('.table');
+                      var rows = table.querySelectorAll('tbody tr');
 
-                rows.forEach(function(row) {
-                    var cells = row.querySelectorAll('td');
-                    descriptions.push(cells[2].textContent); // Description
-                    amounts.push(parseFloat(cells[1].textContent)); // Amount
-                });
+                      // Create objects to store category and total amount
+                      var categories = {};
+                      rows.forEach(function(row) {
+                        var cells = row.querySelectorAll('td');
+                        var category = cells[1].textContent; // Category
+                        var amount = parseFloat(cells[2].textContent); // Amount
 
-                // Create bar graph
-                var ctx = document.getElementById('incomeChart').getContext('2d');
-                var incomeChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: descriptions,
-                        datasets: [{
+                        // Check if category exists in object
+                        if (categories[category]) {
+                          categories[category] += amount; // Add amount to existing category
+                        } else {
+                          categories[category] = amount; // Create new category with amount
+                        }
+                      });
+
+                      // Extract labels and amounts from categories object
+                      var labels = [];
+                      var amounts = [];
+                      
+                      for (var category in categories) {
+                        if (categories.hasOwnProperty(category)) {
+                          labels.push(category);
+                          amounts.push(categories[category]);
+                        }
+                      }
+                    
+                      // Create pie chart
+                      var ctx = document.getElementById('expenseChart').getContext('2d');
+                      var expenseChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                          labels: labels,
+                          datasets: [{
                             label: 'Amount',
                             data: amounts,
-                            backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue color with transparency
-                            borderColor: 'rgba(54, 162, 235, 1)', // Blue color
+                            backgroundColor: [
+                              'rgba(255, 99, 132, 0.2)', // Red color with transparency
+                              'rgba(54, 162, 235, 0.2)', // Blue color with transparency
+                              'rgba(255, 206, 86, 0.2)', // Yellow color with transparency
+                              'rgba(75, 192, 192, 0.2)', // Green color with transparency
+                              'rgba(153, 102, 255, 0.2)', // Purple color with transparency
+                              'rgba(255, 159, 64, 0.2)' // Orange color with transparency
+                            ],
+                            borderColor: [
+                              'rgba(255, 99, 132, 1)', // Red color
+                              'rgba(54, 162, 235, 1)', // Blue color
+                              'rgba(255, 206, 86, 1)', // Yellow color
+                              'rgba(75, 192, 192, 1)', // Green color
+                              'rgba(153, 102, 255, 1)', // Purple color
+                              'rgba(255, 159, 64, 1)' // Orange color
+                            ],
                             borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true,
-                                    fontColor: 'blue'
-                                }
-                            }]
+                          }]
+                        },
+                        options: {
+                          responsive: true,
                         }
-                    }
-                });
-            </script>
-          </div>
+                      });
+                    </script>
+                  </div>       
+                </div>
+                <div class="income">
+                  <div class="card-container">
+                      <div>
+                        <div class="card text">
+                          <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs">
+                              <li class="nav-item"><strong>Incomes</strong></li>
+                            </ul>
+                          </div>
+                          <div class="card-body">
+                            <p class="card-text">
+                              {% if incomes %}
+                                <table class="table table-income table-hover table-striped">
+                                  <thead class="table-dark">
+                                    <tr>
+                                      <th>ID</th>
+                                      <th>Amount</th>
+                                      <th>Description</th>
+                                      <th>Date</th>
+                                      <th>Created At</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {% for income in incomes %}
+                                    <tr>
+                                      <td><a href="{%url 'incomeDetail' income.id %}">{{ income.id }}</a></td>                     
+                                      <td>{{ income.amount }}</td>
+                                      <td>{{ income.description }}</td>
+                                      <td>{{ income.date }}</td>
+                                      <td>{{ income.created_at }}</td>                          
+                                    </tr>
+                                    {% endfor %}
+                                  </tbody>
+                                </table>
+                              <br>
+                              <p><strong>Total Income: {{ total_income }}</strong></p>
+                              {% else %}
+                              <h3>You have not yet recorded any income</h3>
+                              {% endif %}
+                            </p>
+                          </div>
+                        </div>
+                        <div >
+                          <br>
+                          <a class="btn btn-secondary" href="{%url 'income'%}"
+                              >Add Income</a
+                            >
+                        </div>
+                      </div>
+                  </div>
+                  <div class="income-chart">
+                      <canvas id="incomeChart" width="400" height="200"></canvas>
+                      <script>
+                        // Extract data from the HTML table
+                        var table = document.querySelector('.table-income');
+                        var rows = table.querySelectorAll('tbody tr');
+                        var descriptions = [];
+                        var amounts = [];
+
+                        rows.forEach(function(row) {
+                            var cells = row.querySelectorAll('td');
+                            descriptions.push(cells[2].textContent); // Description
+                            amounts.push(parseFloat(cells[1].textContent)); // Amount
+                        });
+
+                        // Create bar graph
+                        var ctx = document.getElementById('incomeChart').getContext('2d');
+                        var incomeChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: descriptions,
+                                datasets: [{
+                                    label: 'Amount',
+                                    data: amounts,
+                                    backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue color with transparency
+                                    borderColor: 'rgba(54, 162, 235, 1)', // Blue color
+                                    borderWidth: 2
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            fontColor: 'blue'
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    </script>
+                  </div>
+                </div>
+          </div> 
         </div>
-    </div> 
+      </div>
+    </div>
   </body>
 </html>
 {% endblock %}

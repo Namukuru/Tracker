@@ -4,10 +4,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Budget</title>
   </head>
   <body>
     <h1>Budget</h1>
+    <br />
+    <form method="POST" action="{% url 'budget'  %}">
+      {% csrf_token %} {{ form.as_p }}
+      <br />
+      <a href="{% url 'userProfile' %}" class="btn btn-secondary">Back</a>
+      <button type="submit" class="btn btn-primary">Add Budget</button>
+    </form>
   </body>
 </html>
 {%endblock%}
