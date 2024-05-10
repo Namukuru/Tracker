@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Expense, Income
+from .models import Expense, Income, Budget
 
 # creation of the sign up form
 
@@ -66,3 +66,12 @@ class IncomeForm(forms.ModelForm):
     class Meta:
         model = Income
         fields = ('amount', 'description')
+
+
+class BudgetForm(forms.ModelForm):
+    amount = forms.CharField(required=True, widget=forms.widgets.TextInput(
+        attrs={"placeholder": "Amount", "class": "form-control"}), label=" Amount of the Budget")
+
+    class Meta:
+        model = Budget
+        fields = ('amount',)
