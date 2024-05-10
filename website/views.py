@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import SignUpForm, ExpenseForm, IncomeForm
-from .models import Expense, Income
+from .forms import SignUpForm, ExpenseForm, IncomeForm, BudgetForm
+from .models import Expense, Income, Budget
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -32,25 +33,38 @@ def reports(request):
 
 
 def budget(request):
-    return render(request, 'budget.html', {})
+    form = BudgetForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            new_budget = form.save(commit=False)
+            new_budget.user = request.user  # Associate the expense with the logged-in user
+            new_budget.save()
+            messages.success(
+                request, "You have successfully set the budget")
+        return redirect('home')
+    return render(request, 'budget.html', {'form': form})
 
 
+@login_required
 def user_profile(request):
     expenses = request.user.expense_set.all()  # Filter by logged-in user
     incomes = request.user.income_set.all()
-    total_expenses = 0
-    total_income = 0
-    for expense in expenses:
-        total_expenses += expense.amount
-    for income in incomes:
-        total_income += income.amount
+    total_expenses = sum(expense.amount for expense in expenses)
+    total_income = sum(income.amount for income in incomes)
     balance = total_income - total_expenses
+    try:
+        budget = request.user.budget  # Access the budget of the logged-in user
+        budget_amount = budget.amount
+    except Budget.DoesNotExist:
+        budget_amount = None
     context = {
         'expenses': expenses,
         'incomes': incomes,
         'total_expenses': total_expenses,
         'total_income': total_income,
-        'balance': balance
+        'balance': balance,
+        'budget': budget,
+        'budget_amount': budget_amount
     }
 
     return render(request, 'userProfile.html', context)
@@ -108,7 +122,7 @@ def add_expense(request):
             new_expense.save()
             messages.success(
                 request, "You have successfully added the expense")
-        return redirect('home')
+        return redirect('userProfile')
     return render(request, 'expense.html', {'form': form})
 
 
