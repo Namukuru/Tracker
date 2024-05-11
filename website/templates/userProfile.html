@@ -110,7 +110,7 @@
                                 <tr>
                                   <td><a href="{%url 'expenseDetail' expense.id %}">{{ expense.id }}</a></td>
                                   <td>{{ expense.category }}</td>
-                                  <td>{{ expense.amount }}</td>
+                                  <td>{{ expense.amount|floatformat:"0"|intcomma }}</td>
                                   <td>{{ expense.description }}</td>
                                   <td>{{ expense.date }}</td>
                                   <td>{{expense.created_at}}</td>
@@ -119,7 +119,7 @@
                               </tbody>
                             </table>
                             <br>
-                            <p><strong>Total Expenses: {{ total_expenses }}</strong></p>
+                            <p><strong>Total Expenses: {{ total_expenses|floatformat:"0"|intcomma }}</strong></p>
                             {% else %}
                             <h3>You have not yet recorded any expense</h3>
                             {% endif %}
@@ -228,7 +228,7 @@
                                     {% for income in incomes %}
                                     <tr>
                                       <td><a href="{%url 'incomeDetail' income.id %}">{{ income.id }}</a></td>                     
-                                      <td>{{ income.amount }}</td>
+                                      <td>{{ income.amount}}</td>
                                       <td>{{ income.description }}</td>
                                       <td>{{ income.date }}</td>
                                       <td>{{ income.created_at }}</td>                          
@@ -237,7 +237,7 @@
                                   </tbody>
                                 </table>
                               <br>
-                              <p><strong>Total Income: {{ total_income }}</strong></p>
+                              <p><strong>Total Income: {{ total_income|floatformat:"0"|intcomma }}</strong></p>
                               {% else %}
                               <h3>You have not yet recorded any income</h3>
                               {% endif %}
