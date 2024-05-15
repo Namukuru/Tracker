@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.db import models
+from django.core.exceptions import ValidationError
 
 
 class UserProfile(models.Model):
@@ -30,6 +31,12 @@ class Expense(models.Model):
 
     def __str__(self):
         return (f"{self.amount} - {self.category if self.category else 'No Category'} - {self.date} ")
+
+    def clean(self):
+        if self.date and self.created_at:
+            if self.date > self.created_at.date():
+                raise ValidationError(
+                    {'date': "Date can't be later than created at."})
 
 
 class Income(models.Model):
