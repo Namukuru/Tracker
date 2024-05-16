@@ -4,101 +4,140 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+		.nav-item.dropdown {
+		float: right;
+		}
+	 </style>
 </head>
 <body>
-    <div class="income">
-        <div class="card-container">
-            <div>
-              <div class="card text">
+<div class="income">
+    <div class="card-container">
+        <div>
+            <div class="card text">
                 <div class="card-header">
-                  <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item"><strong>Incomes</strong></li>
-                  </ul>
-                </div>
-                <div class="card-body">
-                  <p class="card-text">
-                    {% if incomes %}
-                      <table class="table table-income table-hover table-striped">
-                        <thead class="table-dark">
-                          <tr>
-                            <th>ID</th>
-                            <th>Amount</th>
-                            <th>Description</th>
-                            <th>Date</th>
-                            <th>Created At</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {% for income in incomes %}
-                          <tr>
-                            <td><a href="{%url 'incomeDetail' income.id %}">{{ income.id }}</a></td>                     
-                            <td>{{ income.amount}}</td>
-                            <td>{{ income.description }}</td>
-                            <td>{{ income.date }}</td>
-                            <td>{{ income.created_at }}</td>                          
-                          </tr>
-                          {% endfor %}
-                        </tbody>
-                      </table>
-                    <br>
-                    <p><strong>Total Income: {{ total_income }}</strong></p>
-                    {% else %}
-                    <h3>You have not yet recorded any income</h3>
-                    {% endif %}
-                  </p>
-                </div>
-              </div>
-              <div >
+                    <ul class="nav nav-tabs card-header-tabs">
+                      <li class="nav-item"><strong>Income</strong></li>
+                      <li class="nav-item dropdown ml-auto"> <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> <a class="dropdown-item" href="#">January</a>
+                          <a class="dropdown-item" href="#">February</a>
+                          <a class="dropdown-item" href="#">March</a>
+                          <a class="dropdown-item" href="#">April</a>
+                          <a class="dropdown-item" href="#">May</a>
+                          <a class="dropdown-item" href="#">June</a>
+                          <a class="dropdown-item" href="#">July</a>
+                          <a class="dropdown-item" href="#">August</a>
+                          <a class="dropdown-item" href="#">September</a>
+                          <a class="dropdown-item" href="#">October</a>
+                          <a class="dropdown-item" href="#">November</a>
+                          <a class="dropdown-item" href="#">December</a>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  
+                  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+                  
+                  <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                      var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                      var currentDate = new Date();
+                      var currentMonth = months[currentDate.getMonth()]; // Get current month
+                      var dropdownToggle = document.getElementById("navbarDropdown");
+                  
+                      // Set dropdown toggle text to current month after a slight delay to avoid flickering
+                      setTimeout(function() {
+                        dropdownToggle.innerText = currentMonth;
+                      }, 10); // Adjust delay if needed
+                  
+                    });
+                  </script>
+                  
+            <div class="card-body">
+                <p class="card-text">
+                {% if incomes %}
+                    <table class="table table-income table-hover table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                        <th>ID</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for income in incomes %}
+                        <tr>
+                        <td><a href="{%url 'incomeDetail' income.id %}">{{ income.id }}</a></td>                     
+                        <td>{{ income.amount}}</td>
+                        <td>{{ income.description }}</td>
+                        <td>{{ income.date }}</td>
+                        <td>{{ income.created_at }}</td>                          
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
                 <br>
-                <a class="btn btn-secondary" href="{%url 'income'%}"
-                    >Add Income</a
-                  >
-              </div>
+                <p><strong>Total Income: {{ total_income }}</strong></p>
+                {% else %}
+                <h3>You have not yet recorded any income</h3>
+                {% endif %}
+                </p>
+            </div>
+            </div>
+            <div >
+            <br>
+            <a class="btn btn-secondary" href="{%url 'income'%}"
+                >Add Income</a
+                >
             </div>
         </div>
-        <div class="income-chart">
-            <canvas id="incomeChart" width="400" height="200"></canvas>
-            <script>
-              // Extract data from the HTML table
-              var table = document.querySelector('.table-income');
-              var rows = table.querySelectorAll('tbody tr');
-              var descriptions = [];
-              var amounts = [];
+    </div>
+    <div class="income-chart">
+        <canvas id="incomeChart" width="400" height="200"></canvas>
+        <script>
+            // Extract data from the HTML table
+            var table = document.querySelector('.table-income');
+            var rows = table.querySelectorAll('tbody tr');
+            var descriptions = [];
+            var amounts = [];
 
-              rows.forEach(function(row) {
-                  var cells = row.querySelectorAll('td');
-                  descriptions.push(cells[2].textContent); // Description
-                  amounts.push(parseFloat(cells[1].textContent)); // Amount
-              });
+            rows.forEach(function(row) {
+                var cells = row.querySelectorAll('td');
+                descriptions.push(cells[2].textContent); // Description
+                amounts.push(parseFloat(cells[1].textContent)); // Amount
+            });
 
-              // Create bar graph
-              var ctx = document.getElementById('incomeChart').getContext('2d');
-              var incomeChart = new Chart(ctx, {
-                  type: 'bar',
-                  data: {
-                      labels: descriptions,
-                      datasets: [{
-                          label: 'Amount',
-                          data: amounts,
-                          backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue color with transparency
-                          borderColor: 'rgba(54, 162, 235, 1)', // Blue color
-                          borderWidth: 2
-                      }]
-                  },
-                  options: {
-                      responsive: true,
-                      scales: {
-                          yAxes: [{
-                              ticks: {
-                                  beginAtZero: true,
-                                  fontColor: 'blue'
-                              }
-                          }]
-                      }
-                  }
-              });
-          </script>
-        </div>
-      </div>
+            // Create bar graph
+            var ctx = document.getElementById('incomeChart').getContext('2d');
+            var incomeChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: descriptions,
+                    datasets: [{
+                        label: 'Amount',
+                        data: amounts,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue color with transparency
+                        borderColor: 'rgba(54, 162, 235, 1)', // Blue color
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                fontColor: 'blue'
+                            }
+                        }]
+                    }
+                }
+            });
+        </script>
+    </div>
+</div>
 </body>
 </html>
