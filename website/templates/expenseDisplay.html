@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div class="expense">
+    <div class="card-container ">
+        <div>
+            <div class="card text">
+               <div class="card-header">
+                     <ul class="nav nav-tabs card-header-tabs">
+                         <li class="nav-item"><strong>Expenses</strong></li>                
+                     </ul>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                    {% if expenses %}
+                    <table class="table table-striped table-hover">
+                       <thead class="table-dark">
+                         <tr>
+                           <th>ID</th>
+                           <th>Category</th>
+                           <th>Amount</th>
+                           <th>Description</th>
+                           <th>Date</th>
+                           <th>Created At</th>
+                         </tr>
+                       </thead>
+                       <tbody>
+                         {% for expense in expenses %}
+                         <tr>
+                           <td><a href="{%url 'expenseDetail' expense.id %}">{{ expense.id }}</a></td>
+                           <td>{{ expense.category }}</td>
+                           <td>{{ expense.amount }}</td>
+                           <td>{{ expense.description }}</td>
+                           <td>{{ expense.date|date:'d-m-y' }}</td>
+                           <td>{{expense.created_at|date:'d-m-y , g:i A'}}</td>
+                         </tr>
+                         {% endfor %}
+                       </tbody>
+                    </table>
+                     <br>
+                     <p><strong>Total Expenses: {{ total_expenses }}</strong></p>
+                         {% else %}
+                         <h3>You have not yet recorded any expense</h3>
+                         {% endif %}
+                     </p>
+                     </div>
+                   </div>
+                   <div >
+                     <br>
+                     <a class="btn btn-secondary" href="{%url 'expense'%}"
+                         >Add Expense</a
+                       >
+                   </div>  
+                 </div> 
+               </div>         
+               <div class="expense-chart">
+                 <canvas id="expenseChart" width="300" height="300"></canvas>
+                 <script>
+                   // Extract data from the HTML table
+                   var table = document.querySelector('.table');
+                   var rows = table.querySelectorAll('tbody tr');
+
+                   // Create objects to store category and total amount
+                   var categories = {};
+                   rows.forEach(function(row) {
+                     var cells = row.querySelectorAll('td');
+                     var category = cells[1].textContent.trim(); // Category
+                     var amount = parseFloat(cells[2].textContent.trim()); // Amount
+
+                     // Check if category exists in object
+                     if (categories[category]) {
+                       categories[category] += amount; // Add amount to existing category
+                     } else {
+                       categories[category] = amount; // Create new category with amount
+                     }
+                   });
+
+                   // Extract labels and amounts from categories object
+                   var labels = [];
+                   var amounts = [];
+                   
+                   for (var category in categories) {
+                     if (categories.hasOwnProperty(category)) {
+                       labels.push(category);
+                       amounts.push(categories[category]);
+                     }
+                   }
+                 
+                   // Create pie chart
+                   var ctx = document.getElementById('expenseChart').getContext('2d');
+                   var expenseChart = new Chart(ctx, {
+                     type: 'pie',
+                     data: {
+                       labels: labels,
+                       datasets: [{
+                         label: 'Amount',
+                         data: amounts,
+                         backgroundColor: [
+                           'rgba(255, 99, 132, 0.2)', // Red color with transparency
+                           'rgba(54, 162, 235, 0.2)', // Blue color with transparency
+                           'rgba(255, 206, 86, 0.2)', // Yellow color with transparency
+                           'rgba(75, 192, 192, 0.2)', // Green color with transparency
+                           'rgba(153, 102, 255, 0.2)', // Purple color with transparency
+                           'rgba(255, 159, 64, 0.2)' // Orange color with transparency
+                         ],
+                         borderColor: [
+                           'rgba(255, 99, 132, 1)', // Red color
+                           'rgba(54, 162, 235, 1)', // Blue color
+                           'rgba(255, 206, 86, 1)', // Yellow color
+                           'rgba(75, 192, 192, 1)', // Green color
+                           'rgba(153, 102, 255, 1)', // Purple color
+                           'rgba(255, 159, 64, 1)' // Orange color
+                         ],
+                         borderWidth: 2
+                       }]
+                     },
+                     options: {
+                       responsive: true,
+                     }
+                   });
+                 </script>
+               </div>       
+             </div>
+</body>
+</html>
