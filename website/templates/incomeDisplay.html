@@ -24,7 +24,7 @@
                     <div>
                         <ul class="nav nav-tabs card-header-tabs">
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="incomeDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="#">January</a>
                                     <a class="dropdown-item" href="#">February</a>
@@ -50,21 +50,26 @@
                 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                 var currentDate = new Date();
                 var currentMonth = months[currentDate.getMonth()]; // Get current month
-                var dropdownToggle = document.getElementById("navbarDropdown");
-            
-                // Set dropdown toggle text to current month after a slight delay to avoid flickering
-                setTimeout(function() {
-                    dropdownToggle.innerText = currentMonth;
-                }, 10); // Adjust delay if needed
-                
-                // Prevent default action on dropdown toggle click
-                dropdownToggle.addEventListener("click", function(event) {
-                    event.preventDefault();
-                });
+
+                // Function to initialize dropdown for a specific table
+                function initializeDropdown(dropdownId) {
+                    var dropdownToggle = document.getElementById(dropdownId);
+
+                    // Set dropdown toggle text to current month after a slight delay to avoid flickering
+                    setTimeout(function() {
+                        dropdownToggle.innerText = currentMonth;
+                    }, 10); // Adjust delay if needed
+
+                    // Prevent default action on dropdown toggle click
+                    dropdownToggle.addEventListener("click", function(event) {
+                        event.preventDefault();
+                    });
+                }
+
+                // Initialize dropdown
+                initializeDropdown("incomeDropdown");
             });
-            </script>
-            
-                          
+            </script>                   
         <div class="card-body">
             <p class="card-text">
             {% if incomes %}

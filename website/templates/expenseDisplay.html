@@ -8,6 +8,27 @@
 		.nav-item.dropdown {
 		float: right;
 		}
+		.dropdown {
+		position: relative;
+		display: flex;
+		align-items: center;
+		}
+
+		.dropdown-menu {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		display: none;
+		flex-direction: column;
+		background-color: #fff;
+		padding: 0.5rem 0;
+		border-radius: 0.25rem;
+		box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+		}
+
+		.dropdown:hover .dropdown-menu {
+		display: flex;
+		}
 	 </style>
 </head>
 <body>
