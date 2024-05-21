@@ -29,6 +29,9 @@
 		.dropdown:hover .dropdown-menu {
 		display: flex;
 		}
+		.navbarDropdown{
+		position: relative;
+		}
 	 </style>
 </head>
 <body>
@@ -68,21 +71,55 @@
 				</div>
 				<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 				<script>
-				document.addEventListener("DOMContentLoaded", function() {
-					var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-					var currentDate = new Date();
-					var currentMonth = months[currentDate.getMonth()]; // Get current month
-					var dropdownToggle = document.getElementById("navbarDropdown");
-				
-					// Set dropdown toggle text to current month after a slight delay to avoid flickering
-					setTimeout(function() {
-						dropdownToggle.innerText = currentMonth;
-					}, 10); // Adjust delay if needed
-					// Prevent default action on dropdown toggle click
-					dropdownToggle.addEventListener("click", function(event) {
-						event.preventDefault();
-					});
-				});
+					document.addEventListener("DOMContentLoaded", function () {
+						var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+						var currentDate = new Date();
+						var currentMonth = months[currentDate.getMonth()]; // Get current month
+
+						var dropdownToggle = document.getElementById("navbarDropdown");
+						var expenseContainer = document.querySelector(".expenses-container"); // Assuming a container for expenses
+
+						// Set dropdown toggle text to current month after a slight delay to avoid flickering
+						setTimeout(function () {
+							dropdownToggle.innerText = currentMonth;
+						}, 1); // Adjust delay if needed
+
+						// Prevent default action on dropdown toggle click
+						dropdownToggle.addEventListener("click", function (event) {
+							event.preventDefault();
+						});
+
+						// Function to filter expenses
+						function filterExpensesByMonth(month) {
+							var hasExpenses = false; // Flag to track if any expenses are found
+
+							document.querySelectorAll('.expense-item').forEach(function (expense) {
+							if (expense.getAttribute('data-month') === month) {
+								expense.style.display = 'block';
+								hasExpenses = true; // Mark expenses found
+							} else {
+								expense.style.display = 'none';
+							}
+							});
+
+							// Update expense container content based on flag
+							if (!hasExpenses) {
+							expenseContainer.innerHTML = "No expenses found for " + month;
+							} else {
+							expenseContainer.innerHTML = ""; // Clear previous message if any
+							}
+						}
+
+						// Add click event listener to dropdown menu items (assuming month options exist)
+						var dropdownItems = document.querySelectorAll(".dropdown-item");
+						dropdownItems.forEach(function (item) {
+							item.addEventListener("click", function () {
+							var selectedMonth = item.innerText;
+							filterExpensesByMonth(selectedMonth);
+							});
+						});
+						});
+
 				</script>
 												 
 				<div class="card-body">

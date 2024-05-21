@@ -46,7 +46,7 @@
             </div>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
             <script>
-            document.addEventListener("DOMContentLoaded", function() {
+                document.addEventListener("DOMContentLoaded", function() {
                 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                 var currentDate = new Date();
                 var currentMonth = months[currentDate.getMonth()]; // Get current month
@@ -57,19 +57,18 @@
 
                     // Set dropdown toggle text to current month after a slight delay to avoid flickering
                     setTimeout(function() {
-                        dropdownToggle.innerText = currentMonth;
+                    dropdownToggle.innerText = currentMonth;
                     }, 10); // Adjust delay if needed
 
-                    // Prevent default action on dropdown toggle click
                     dropdownToggle.addEventListener("click", function(event) {
-                        event.preventDefault();
+                    event.stopPropagation(); // Prevent event from bubbling up
                     });
                 }
 
                 // Initialize dropdown
                 initializeDropdown("incomeDropdown");
-            });
-            </script>                   
+                });
+            </script>         
         <div class="card-body">
             <p class="card-text">
             {% if incomes %}
