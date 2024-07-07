@@ -24,6 +24,7 @@
 		padding: 0.5rem 0;
 		border-radius: 0.25rem;
 		box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+		z-index: 20;
 		}
 
 		.dropdown:hover .dropdown-menu {
@@ -75,25 +76,25 @@
 						var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 						var currentDate = new Date();
 						var currentMonth = months[currentDate.getMonth()]; // Get current month
-				
+
 						var dropdownToggle = document.getElementById("navbarDropdown");
 						var expenseContainer = document.querySelector(".expenses-container"); // Assuming a container for expenses
-				
+
 						// Set dropdown toggle text to current month after a slight delay to avoid flickering
 						setTimeout(function () {
 							dropdownToggle.innerText = currentMonth;
 							filterExpensesByMonth(currentMonth); // Display current month's expenses on load
 						}, 1); // Adjust delay if needed
-				
+
 						// Prevent default action on dropdown toggle click
 						dropdownToggle.addEventListener("click", function (event) {
 							event.preventDefault();
 						});
-				
+
 						// Function to filter expenses
 						function filterExpensesByMonth(month) {
 							var hasExpenses = false; // Flag to track if any expenses are found
-				
+
 							document.querySelectorAll('.expense-item').forEach(function (expense) {
 								if (expense.getAttribute('data-month') === month) {
 									expense.style.display = 'block';
@@ -102,7 +103,7 @@
 									expense.style.display = 'none';
 								}
 							});
-				
+
 							// Update expense container content based on flag
 							if (!hasExpenses) {
 								expenseContainer.innerHTML = "No expenses found for " + month;
@@ -110,11 +111,12 @@
 								expenseContainer.innerHTML = ""; // Clear previous message if any
 							}
 						}
-				
+
 						// Add click event listener to dropdown menu items (assuming month options exist)
 						var dropdownItems = document.querySelectorAll(".dropdown-item");
 						dropdownItems.forEach(function (item) {
-							item.addEventListener("click", function () {
+							item.addEventListener("click", function (event) {
+								event.preventDefault(); // Prevent default action
 								var selectedMonth = item.innerText;
 								dropdownToggle.innerText = selectedMonth; // Update dropdown toggle text
 								filterExpensesByMonth(selectedMonth); // Filter expenses based on selected month
