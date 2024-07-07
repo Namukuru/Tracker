@@ -194,3 +194,9 @@ def update_income(request, pk):
         form = IncomeForm(instance=current_income)
 
     return render(request, 'update_income.html', {'form': form})
+
+
+def get_expenses_for_month(request, selected_month):
+    # Assuming 'selected_month' is passed as a parameter (e.g., 'January', 'February', etc.)
+    expenses = Expense.objects.filter(date__month=selected_month)
+    return render(request, 'expenses_template.html', {'expenses': expenses})
